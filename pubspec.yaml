@@ -81,7 +81,7 @@ dependencies:
   # 微信视频拨打
   wechat_video_call:
     git:
-      url: https://github.com/zhihaogao96-blip/wechat-video-call.git
+      url: https://github.com/zhihaogao96-blip/wechat_video_call.git
       ref: main
         
 
