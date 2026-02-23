@@ -1,0 +1,21 @@
+workflows:
+  android-workflow:
+    name: Android Workflow
+    instance_type: mac_mini_m1  # 或 mac_mini_m2，根据你的免费额度
+    max_build_duration: 60
+    integrations:
+      app_store_connect: null
+      google_play: null
+    scripts:
+      - name: Get Flutter packages
+        script: flutter pub get
+      - name: Build Android release APK
+        script: |
+          flutter build apk --release --split-per-abi
+    artifacts:
+      - build/**/outputs/**/*.apk
+      - build/**/outputs/**/*.aab
+    publishing:
+      email:
+        recipients:
+          - zhihaogao96@gmail.com  # 改成你的邮箱，构建完自动发 APK 给你
