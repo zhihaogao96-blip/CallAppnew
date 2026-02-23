@@ -1,0 +1,64 @@
+name: Manual operation
+
+on:
+  workflow_dispatch:
+    inputs:
+      flutter_channel:
+        default: 'beta'
+        required: true
+        type: choice
+        options:
+          - beta
+          - master
+          - stable
+        description: 'flutter channel'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Set Up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'oracle'
+          cache: 'gradle'
+          java-version: '17'
+
+      - name: Set Up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: ${{ inputs.flutter_channel }}
+          cache: true
+
+      - name: Install Dependencies
+        run: flutter pub get
+        shell: bash
+
+      - name: Install flutter_distributor
+        run: dart pub global activate flutter_distributor
+        shell: bash
+
+      - name: Checking flutter
+        run: flutter doctor --verbose
+        shell: bash
+
+      - name: Analyze project source
+        run: dart analyze
+        shell: bash
+
+      - name: Build APK
+        run: flutter_distributor release --name all
+        shell: bash
+
+      - name: Archive APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: call
+          path: |
+            dist/**
+          overwrite: true
+          compression-level: 9
+          retention-days: 3
