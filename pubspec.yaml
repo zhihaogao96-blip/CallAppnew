@@ -80,7 +80,9 @@ dependencies:
   wechat_assets_picker: ^10.0.0
   # 微信视频拨打
   wechat_video_call:
-    path: ../wechat_video_call
+    git:
+      url: https://github.com/zhihaogao96-blip/wechat_video_call
+      ref: main
         
 
 dev_dependencies:
